@@ -1,6 +1,5 @@
 ﻿
-// termproject.cpp : 이 파일에는 'main' 함수가 포함됩니다. 거기서 프로그램 실행이 시작되고 종료됩니다.
-//
+
 #include <iostream>
 #include <algorithm>
 #include <fstream>
@@ -252,11 +251,12 @@ int main() {
                 for (int i = 0; i < v1.size(); i++) {
                     vectemp = f->makevector(v1[i]);
                     for (int d = 0; d < vectemp.size(); d++) {
-                            if (vectemp[d] == s1 && check == 0) {
-                                check = 1;
-                                count++;
-                                pagenum += i;
-                            }
+                        if (vectemp[d] == s1 && check == 0) {
+                            check = 1;
+                            count++;
+                            if (pagenum != v1.size() - 1)
+                                pagenum = i;
+                        }
                     }
                 }
                 if (count == 0) {
@@ -275,13 +275,17 @@ int main() {
             }
         }
         else if (mode == "p") { //ok
-            if (pagenum - 20 < 0) {
-            print = "first page";
+            if (pagenum == 0) {
+                int t = 0;
+                print = "first page";
+            }
+            else if (pagenum - 20 < 0) {
+                print = "first page";pagenum = 0;
                 int t = 0;
                 for (int i = 0; i < 20; i++) {
                     std::cout << " " << t + 1 << "| " << v1[i] << "\n";
                     t++;
-                }             
+                }
             }
             else if (pagenum > 0) {
                 pagenum -= 20;
@@ -292,16 +296,6 @@ int main() {
                         t++;
                     }
                 }
-            }
-            else if (pagenum == 0) {
-                int t = 0;
-                for (int i = pagenum; i < 20 + pagenum; i++) {
-                    if (i < v1.size() && v1[i].size() != 0) {
-                        std::cout << " " << t + 1 << "| " << v1[i] << "\n";
-                        t++;
-                    }
-                }
-                print = "first page";
             }
             else if (v1.size() - pagenum < 20) {
                 int t = 0;
@@ -315,23 +309,27 @@ int main() {
             if (v1.size() - pagenum > 20) {
                 pagenum += 20;
                 int t = 0;
-                for (int e = pagenum; e < 20 + pagenum; e++) {
-                    if (e < v1.size() && v1[e].size() != 0) {
-                        std::cout << " " << t + 1 << "| " << v1[e] << "\n";
-                        t++;
+                if (v1.size() - pagenum > 20) {
+                    for (int e = pagenum; e < 20 + pagenum; e++) {
+                        if (e < v1.size()) {
+                            std::cout << " " << t + 1 << "| " << v1[e] << "\n";
+                            t++;
+                        }
                     }
                 }
+            }            
+            else if(v1.size() - 20 == pagenum){
+                print = "last page";
             }
             if (v1.size() - pagenum < 20) {
+                pagenum = v1.size() - 20;
                 int t = 0;
-                for (int i = 20 - v1.size(); i < v1.size(); i++) {
+                for (int i =v1.size() - 20; i < v1.size(); i++) {
                     std::cout << " " << t + 1 << "| " << v1[i] << "\n";
                     t++;
                 }
             }
-            else {
-                print = "last page";
-            }
+
         }
         else if (mode == "t" && inputStr == "t") { //ok
             f->makefile(v1);
