@@ -276,7 +276,12 @@ int main() {
         }
         else if (mode == "p") { //ok
             if (pagenum - 20 < 0) {
-                print = "first page";
+            print = "first page";
+                int t = 0;
+                for (int i = 0; i < 20; i++) {
+                    std::cout << " " << t + 1 << "| " << v1[i] << "\n";
+                    t++;
+                }             
             }
             else if (pagenum > 0) {
                 pagenum -= 20;
@@ -298,9 +303,16 @@ int main() {
                 }
                 print = "first page";
             }
+            else if (v1.size() - pagenum < 20) {
+                int t = 0;
+                for (int i = pagenum; i < v1.size(); i++) {
+                    std::cout << " " << t + 1 << "| " << v1[i] << "\n";
+                    t++;
+                }
+            }
         }
         else if (mode == "n") { // ok
-            if (f->result.size() - pagenum > 20) {
+            if (v1.size() - pagenum > 20) {
                 pagenum += 20;
                 int t = 0;
                 for (int e = pagenum; e < 20 + pagenum; e++) {
@@ -308,6 +320,13 @@ int main() {
                         std::cout << " " << t + 1 << "| " << v1[e] << "\n";
                         t++;
                     }
+                }
+            }
+            if (v1.size() - pagenum < 20) {
+                int t = 0;
+                for (int i = 20 - v1.size(); i < v1.size(); i++) {
+                    std::cout << " " << t + 1 << "| " << v1[i] << "\n";
+                    t++;
                 }
             }
             else {
